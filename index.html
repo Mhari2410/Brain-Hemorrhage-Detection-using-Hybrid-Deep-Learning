@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Hemorrhage Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            color: #003366;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background: #ffffff;
+            width: 50%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 51, 102, 0.2);
+            margin-top: 50px;
+        }
+        .upload-box {
+            border: 2px dashed #0073e6;
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #e6f2ff;
+        }
+        .upload-box:hover {
+            background-color: #cce6ff;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            max-width: 450px;
+            max-height: 300px;
+            margin-top: 10px;
+            border-radius: 5px;
+            object-fit: contain;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        .prediction-red {
+            color: red;
+        }
+        .prediction-green {
+            color: green;
+        }
+        .btn-container {
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #0073e6;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, background 0.3s;
+            margin: 10px;
+        }
+        .button:hover {
+            background-color: #005bb5;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Brain Hemorrhage Detection</h2>
+        <p>Drag & Drop an image, Click to Upload, or Paste from Clipboard</p>
+
+        <div class="upload-box" id="drop-area">
+            <p>Drop image here or click to upload</p>
+            <input type="file" id="fileInput" accept="image/*">
+            <img id="preview">
+        </div>
+
+        <button class="button" onclick="uploadImage()">Upload & Predict</button>
+        <p id="result"></p>
+        <p id="health-quote"></p>
+        <h3>Original Image:</h3>
+        <img id="original-image" style="display:none; margin-top:10px; border-radius:5px;" alt="Original uploaded image">
+        <h3 id="heatmap-title" style="display:none;">Heatmap:</h3>
+        <img id="heatmap" style="display:none; margin-top:10px; border-radius:5px;" alt="Heatmap of hemorrhage region">
+
+        <!-- Buttons for navigating -->
+        <div class="btn-container">
+            <button class="button" onclick="window.location.reload();">🔄 Try Another Image</button>
+            <button class="button" onclick="window.location.href='/'">🏠 Go to Home</button>
+        </div>
+    </div>
+
+    <script>
+        let fileInput = document.getElementById("fileInput");
+        let dropArea = document.getElementById("drop-area");
+        let preview = document.getElementById("preview");
+        let resultText = document.getElementById("result");
+        let healthQuote = document.getElementById("health-quote");
+        let originalImage = document.getElementById("original-image");
+        let heatmapTitle = document.getElementById("heatmap-title");
+
+        dropArea.addEventListener("click", () => fileInput.click());
+
+        function uploadImage() {
+            let file = fileInput.files[0];
+            if (!file) { resultText.innerText = "Please select an image!"; resultText.style.color = "red"; return; }
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                originalImage.src = reader.result;
+                originalImage.style.display = "block";
+            };
+            let formData = new FormData();
+            formData.append("file", file);
+            fetch("/predict", { method: "POST", body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    resultText.innerText = "Error: " + data.error;
+                    resultText.className = "prediction-red";
+                } else {
+                    resultText.innerText = `Prediction: ${data.result}`;
+                    resultText.className = data.result === "Hemorrhagic" ? "prediction-red" : "prediction-green";
+                    healthQuote.innerText = data.result === "Hemorrhagic" ? "🩸 Early detection can save lives! Consult a doctor immediately." : "✅ Your scan looks normal. Stay healthy and take care!";
+                    if (data.heatmap) {
+                        heatmapTitle.style.display = "block";
+                        document.getElementById("heatmap").src = data.heatmap;
+                        document.getElementById("heatmap").style.display = "block";
+                    } else {
+                        heatmapTitle.style.display = "none";
+                        document.getElementById("heatmap").style.display = "none";
+                    }
+                }
+            })
+            .catch(error => { resultText.innerText = "Upload failed."; resultText.className = "prediction-red"; console.error("Error:", error); });
+        }
+    </script>
+
+</body>
+</html>

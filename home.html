@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Hemorrhage Awareness</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f0f8ff;
+            color: #003366;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 20px rgba(0, 51, 102, 0.2);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #004080;
+        }
+        p, ul {
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: justify;
+            margin: 10px 20px;
+            color: #003366;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            font-size: 18px;
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            background: #e6f2ff;
+            border-radius: 8px;
+            margin: 5px 0;
+            padding-left: 10px;
+            transition: transform 0.2s ease-in-out, background 0.3s;
+        }
+        ul li:hover {
+            background: #cce6ff;
+            transform: scale(1.05);
+        }
+        .emoji {
+            font-size: 22px;
+            margin-right: 10px;
+        }
+        .button {
+            background-color: #0073e6;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, background 0.3s;
+            margin-top: 15px;
+        }
+        .button:hover {
+            background-color: #005bb5;
+            transform: scale(1.1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Brain Hemorrhage</h1>
+        <p>A brain hemorrhage is a type of stroke caused by an artery bursting in the brain, leading to localized bleeding in surrounding tissues.</p>
+        
+        <h2>⚠️ Causes</h2>
+        <ul>
+            <li><span class="emoji">💉</span> High blood pressure</li>
+            <li><span class="emoji">🚑</span> Head trauma or injury</li>
+            <li><span class="emoji">🩸</span> Aneurysms (weakened blood vessels)</li>
+            <li><span class="emoji">🧬</span> Blood vessel abnormalities</li>
+            <li><span class="emoji">💊</span> Excessive use of blood thinners</li>
+        </ul>
+        
+        <h2>🚨 Symptoms</h2>
+        <ul>
+            <li><span class="emoji">🤕</span> Sudden severe headaches</li>
+            <li><span class="emoji">💪</span> Weakness or numbness in limbs</li>
+            <li><span class="emoji">👀</span> Blurred or double vision</li>
+            <li><span class="emoji">🤢</span> Nausea and vomiting</li>
+            <li><span class="emoji">🗣️</span> Difficulty speaking or understanding speech</li>
+            <li><span class="emoji">🌀</span> Dizziness or loss of balance</li>
+        </ul>
+        
+        <button class="button" onclick="window.location.href='/index'">🔍 Check Hemorrhage</button>
+    </div>
+</body>
+</html>
